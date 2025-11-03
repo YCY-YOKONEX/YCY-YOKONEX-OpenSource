@@ -21,12 +21,13 @@
 
 ```mermaid
 graph LR
-A[游戏客户端] --> B[调用 /user/game_sign 获取 token 与 sign]
-B --> C[初始化腾讯 IM SDK]
-C --> D[登录 IM 用户: game_xx]
-D --> E[发送游戏指令消息 (code: game_info)]
-E --> F[设备端接收并触发动作]
+    A[游戏客户端] --> B["调用 /user/game_sign 获取 token 与 sign"]
+    B --> C["初始化腾讯 IM SDK"]
+    C --> D["登录 IM 用户：game_xx"]
+    D --> E["发送游戏指令消息（code: game_info）"]
+    E --> F["设备端接收并触发动作"]
 ```
+
 
 ------
 
