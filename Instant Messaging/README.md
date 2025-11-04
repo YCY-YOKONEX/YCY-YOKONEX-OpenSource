@@ -1,5 +1,113 @@
 # 役次元 Tencent IM 控制协议（草稿，未实现）
 
+由于设备类型繁多，协议采用 **事件 ID 驱动的通用控制结构**。
+ 每个事件以唯一的 `id` 标识，并根据 `device` 类型关联特定的**默认参数模板**与**指令定义**。
+
+```mermaid
+graph LR
+    A[用户提供uid和token] --> B["游戏连接IM"]
+    B --> C["游戏连接后第一条消息立即发送「游戏matedata」"]
+    C --> D["用户在app端配置指令实际操作"]
+```
+
+------
+
+## 一、step1：游戏 Metadata 示例
+
+```jsonc
+{
+  "code": "game_metadata",
+  "id": "com.github.username.minecraft", // 游戏唯一识别码
+  “name": "Minecraft", // 显示名称
+  "cmd": [ //声明会用到的指令
+    {
+      "id": "hurt",
+      "device": "mustobator",
+      "default_settings": {/*默认执行命令，用户可以手动修改，参考下方说明*/}
+    }
+  ]
+}
+```
+
+------
+
+## 二、字段规范说明
+
+| 字段名                 | 类型   | 必填 | 说明                                                         |
+| ---------------------- | ------ | ---- | ------------------------------------------------------------ |
+| code                   | string | ✅    | "game_metadata"                                              |
+| `id`                   | string | ✅    | 游戏唯一识别码。建议填写可证明的信息，后续可能涉及创作激励计划，例如`com.qq.123456789.minecraft` `com.github.username.minecraft` |
+| name                   | string | ✅    | app端展示名称                                                |
+| `cmd`                  | array  | ✅    | 指令列表，每个元素为一个可触发的事件定义                     |
+| `cmd.id`               | string | ✅    | 指令唯一标识符，遵循变量命名规则（字母开头），不能以 `_` 开头（保留指令） |
+| `cmd.device`           | string | ✅    | 设备类型（见下方设备定义）                                   |
+| `cmd.default_settings` | object | ✅    | 设备特定的参数模板                                           |
+
+------
+
+## 三、各设备类型默认参数与指令定义
+
+### 1️⃣ 电刺激设备（estim）
+
+| 参数名           | 类型    | 说明                               |
+| ---------------- | ------- | ---------------------------------- |
+| `intensity`      | number  | 电流强度（0–100）                  |
+| `waveform`       | string  | 波形类型名称或id                   |
+| `incremental`    | boolean | 是否逐步增强强度                   |
+| `pulse_duration` | number  | 单次放电时长（毫秒）               |
+| `stop`           | boolean | 是否立即停止放电（与其余配置冲突） |
+| `reset_on_stop`  | boolean | 停止放电后是否强度清零             |
+
+------
+
+### 2️⃣ 电动榨精机（mustobator）
+
+| 参数名      | 类型   | 说明                                 |
+| ----------- | ------ | ------------------------------------ |
+| `frequency` | number | 频率（1–10，对应每秒往复次数或档位） |
+| `duration`  | number | 执行时长（毫秒）                     |
+| stop        | bool   | 立即停止执行（与其他参数冲突）       |
+
+> ✅ `stop` 指令不携带参数，仅表示立即终止。
+
+------
+
+### 3️⃣ 灌肠机（enema）
+
+| 参数名     | 类型   | 说明                                                         |
+| ---------- | ------ | ------------------------------------------------------------ |
+| cmd        | 命令   | `fill`（灌肠）`expand`（膨胀）`shrink`（缩小）`pause`（暂停运行） |
+| `duration` | number | 执行时长（毫秒）                                             |
+
+------
+
+### 4️⃣ 跳蛋 / 震动器（vibrator）
+
+| 参数名      | 类型   | 说明                                                         |
+| ----------- | ------ | ------------------------------------------------------------ |
+| `frequency` | string | 震动频率档位或模式名称，例如 `low`、`medium`、`high`、`pulse` |
+| `duration`  | number | 执行时长（毫秒）                                             |
+| stop        | bool   | 立即停止（与其他参数冲突）                                   |
+
+> ✅ 当收到 `stop` 指令时，应立即终止震动并进入空闲状态。
+
+
+
+## 四、后续发送执行指令
+
+```
+{
+  "code": "game_cmd",
+  "id": ”hurt“
+}
+```
+
+
+
+
+
+# 役次元 Tencent IM 控制协议（备选草稿，未实现）
+
 ## 规范前言
 
 - 下方每一段代码块就是腾讯 IM 包中 **`payload.text` 的完整内容**（JSON 对象序列化成字符串前的结构）
@@ -26,13 +134,26 @@
 ```json
 {
   "code": "game_opts",
-  "type": "estim",
-  "action": "control_channel",
-  "data": {
-    "channel": "AB",
-    "strength": 60,
-    "duration_ms": 5000
-  }
+  "actions": [
+    {
+      "type": "estim",
+      "action": "control_channel",
+      "data": {
+        "channel": "A",
+        "strength": 60,
+        "duration_ms": 5000
+      }
+    },
+    {
+      "type": "estim",
+      "action": "control_channel",
+      "data": {
+        "channel": "B",
+        "strength": 30,
+        "duration_ms": 4000
+      }
+    }
+  ]
 }
 ```
 
