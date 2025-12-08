@@ -21,7 +21,7 @@
 
 建议先查看役次元IM基础协议 [IM_basic.md](IM_basic.md) 
 
-遇到问题请先查看 [troubleshooting.md](troubleshooting.md) 
+遇到问题请先查看 [troubleshooting.md](troubleshooting.md) 和  [ycy_im_demo.ts](ycy_im_demo.ts) 
 
 ------
 
