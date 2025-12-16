@@ -59,7 +59,8 @@
 ```
 {
   "code": "game_cmd",
-  "id": "hurt"
+  "id": "hurt",
+  "token": "用户token，不含uid"
 }
 ```
 
