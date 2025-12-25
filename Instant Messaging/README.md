@@ -23,6 +23,12 @@
 
 遇到问题请先查看 [troubleshooting.md](troubleshooting.md) 和  [ycy_im_demo.ts](ycy_im_demo.ts) 
 
+**用户体验优化规范**
+
+- 简化用户填写 UID 和 Token 的过程
+  - 从 app 内启动游戏网页（填写了启动地址）时会通过 GET 参数传递`uid`和`token`，直接读取get参数即可，无须要求用户输入。
+  - `uid`和`token`建议采用一个输入框，连接时通过空格分割`uid`和`token`。此设计目标为让用户只需复制粘贴一次，多次复制粘贴在跨设备场景下较为繁琐。
+
 ------
 
 ## 在APP中创建游戏规范说明
