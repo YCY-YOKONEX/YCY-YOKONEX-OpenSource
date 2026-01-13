@@ -6,13 +6,14 @@
 
 如果你对协议有任何想法或建议，欢迎提出你的意见与反馈！
 
-[IM 玩具控制协议文档](Instant%20Messaging/README.md)
+[IM 玩具控制协议（联动游戏）文档](Instant%20Messaging/README.md)
 
 [WebSocket、HTTP 转 IM 协议仓库](https://github.com/YCY-YOKONEX/API-bridge)
 
 - [x] 蓝牙协议
 - [x] IM 控制协议
 - [x] WebSocket 协议
+- [ ] 智能锁（智能锁盒/心链锁/智能挂锁）（**正在内测**）
 
 ## 免责声明
 
