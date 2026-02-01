@@ -10,7 +10,6 @@
 
 [WebSocket、HTTP 转 IM 协议仓库](https://github.com/YCY-YOKONEX/API-bridge)
 
-- [x] 蓝牙协议
 - [x] IM 控制协议
 - [x] WebSocket 协议
 - [ ] 智能锁（智能锁盒/心链锁/智能挂锁）（**正在内测**）
